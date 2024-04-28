@@ -1,11 +1,15 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 
-class CurrencyConvertPage extends StatelessWidget {
+class CurrencyConvertPage extends StatefulWidget {
   const CurrencyConvertPage({super.key});
+
+  @override
+  _CurrencyConvertPageState createState() => _CurrencyConvertPageState();
+}
+
+class _CurrencyConvertPageState extends State<CurrencyConvertPage> {
+  double result = 0;
+  final TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +24,25 @@ class CurrencyConvertPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: const Text(
+          'Currency Converter',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Welcome to Currency tools',
-              style: TextStyle(
+            Text(
+              'BDT ${result != 0 ? result.toStringAsFixed(2) : result.toStringAsFixed(0)}',
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -35,6 +51,7 @@ class CurrencyConvertPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 0),
               child: TextField(
+                controller: textEditingController,
                 style: const TextStyle(
                   color: Colors.black,
                 ),
@@ -56,6 +73,23 @@ class CurrencyConvertPage extends StatelessWidget {
                 ),
               ),
             ),
+            Container(
+              padding: const EdgeInsets.only(top: 10),
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    result = double.parse(textEditingController.text) * 115;
+                  });
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: const RoundedRectangleBorder(),
+                ),
+                child: const Text('Convert'),
+              ),
+            ),
           ],
         ),
       ),
@@ -63,79 +97,95 @@ class CurrencyConvertPage extends StatelessWidget {
   }
 }
 
-class CurrencyConverterMaterialPage extends StatelessWidget {
-  const CurrencyConverterMaterialPage({super.key});
+class CurrencyConverter extends StatefulWidget {
+  const CurrencyConverter({super.key});
+
+  @override
+  _CurrencyConverterState createState() => _CurrencyConverterState();
+}
+
+class _CurrencyConverterState extends State<CurrencyConverter> {
+  // 1. Create a variable that store the converted value
+  // 2. Create a function that multiply the value given by the textfiled
+  // 3. Store the value that we created
+  // Display the variable
+
+  double result = 0;
+  final TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final border = OutlineInputBorder(
       borderSide: const BorderSide(
-        color: Colors.green,
-        width: 10,
-        style: BorderStyle.solid,
+        color: Colors.black,
+        width: 2,
       ),
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(15),
     );
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 169, 167, 167),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: const Text(
+          'Currency Converter',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              margin: const EdgeInsets.all(10),
-              color: Colors.black,
-              child: const Text(
-                'Hello, Redwan, Good to see you.',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
+            Text(
+              result.toString(),
+              style: const TextStyle(
+                color: Colors.green,
+                fontSize: 35,
+                fontWeight: FontWeight.bold,
               ),
             ),
             Container(
               padding: const EdgeInsets.all(10),
               child: TextField(
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
+                controller: textEditingController,
                 decoration: InputDecoration(
-                  hintText: 'Please enter the amount in usd',
-                  hintStyle: const TextStyle(color: Colors.black),
+                  hintText: 'Enter currency in USD',
+                  hintStyle: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                  ),
                   prefix: const Icon(Icons.monetization_on_outlined),
                   prefixIconColor: Colors.black,
                   filled: true,
                   fillColor: Colors.white,
+                  enabledBorder: border,
                   focusedBorder: border,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 2.5,
-                      style: BorderStyle.solid,
-                    ),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
                 ),
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
-                  signed: true,
+                  signed: false,
                 ),
               ),
             ),
-
-            // Button
-            TextButton(
-              onPressed: () {
-                debugPrint('Button clicked');
-              },
-              style: const ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(Colors.black),
-                foregroundColor: MaterialStatePropertyAll(Colors.white),
-                fixedSize: MaterialStatePropertyAll(Size(200, 50)),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    result = double.parse(textEditingController.text) * 115;
+                  });
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+                child: const Text('Convert'),
               ),
-              child: const Text('Click me'),
             ),
           ],
         ),
